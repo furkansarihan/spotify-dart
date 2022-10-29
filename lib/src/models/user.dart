@@ -113,7 +113,7 @@ class PlayHistory extends Object {
       _$PlayHistoryFromJson(json);
 
   /// The track the user listened to.
-  TrackSimple? track;
+  Track? track;
 
   /// The date and time the track was played.
   @JsonKey(name: 'played_at')
