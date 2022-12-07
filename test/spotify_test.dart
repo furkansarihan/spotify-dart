@@ -132,6 +132,22 @@ Future main() async {
     });
   });
 
+  group('Episodes', () {
+    test('get', () async {
+      var episode = await spotify.episodes.get('3LddnZjkpflldHXnRZ0rrw');
+
+      expect(episode.type, 'episode');
+      expect(episode.id, '3LddnZjkpflldHXnRZ0rrw');
+    });
+
+    test('list', () async {
+      var episodes = await spotify.episodes
+          .list(['3LddnZjkpflldHXnRZ0rrw', '3LddnZjkpflldHXnRZ0rrw']);
+
+      expect(episodes.length, 2);
+    });
+  });
+
   group('Search', () {
     test('get', () async {
       var searchResult = await spotify.search.get('metallica').first();

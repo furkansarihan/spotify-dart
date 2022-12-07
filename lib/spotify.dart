@@ -24,6 +24,7 @@ part 'src/endpoints/audio_features.dart';
 part 'src/endpoints/categories.dart';
 part 'src/endpoints/endpoint_base.dart';
 part 'src/endpoints/endpoint_paging.dart';
+part 'src/endpoints/episodes.dart';
 part 'src/endpoints/me.dart';
 part 'src/endpoints/playlists.dart';
 part 'src/endpoints/recommendations.dart';
