@@ -21,7 +21,7 @@ class Player extends Object {
   int? progress_ms;
 
   /// The currently playing track. Can be [null].
-  Track? item;
+  Object? item;
 
   /// The object type of the currently playing item. Can be one of track,
   /// episode, ad or unknown.

@@ -158,7 +158,9 @@ Future main() async {
     test('currentlyPlaying', () async {
       var result = await spotify.me.currentlyPlaying();
 
-      expect(result.item!.name, 'So Voce');
+      dynamic item = result.item;
+      expect(item.runtimeType, Track);
+      expect(item.name, 'So Voce');
     });
 
     test('devices', () async {

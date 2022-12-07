@@ -65,7 +65,12 @@ Future<void> _currentlyPlaying(SpotifyApi spotify) async =>
         print('Nothing currently playing.');
         return;
       }
-      print('Currently playing: ${a.item?.name}');
+      dynamic item = a.item;
+      if (item is Track) {
+        print('Currently playing track: ${item.name}');
+      } else if (item is Episode) {
+        print('Currently playing episode: ${item.name}');
+      }
     }).catchError(_prettyPrintError);
 
 Future<void> _user(SpotifyApi spotify) async {

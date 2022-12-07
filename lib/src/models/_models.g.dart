@@ -274,7 +274,11 @@ Player _$PlayerFromJson(Map<String, dynamic> json) {
     ..progress_ms = json['progress_ms'] as int?
     ..item = json['item'] == null
         ? null
-        : Track.fromJson(json['item'] as Map<String, dynamic>)
+        : json['currently_playing_type'] == 'track'
+            ? Track.fromJson(json['item'] as Map<String, dynamic>)
+            : json['currently_playing_type'] == 'episode'
+                ? Episode.fromJson(json['item'] as Map<String, dynamic>)
+                : null
     ..currently_playing_type = json['currently_playing_type'] as String?
     ..is_playing = json['is_playing'] as bool?;
 }

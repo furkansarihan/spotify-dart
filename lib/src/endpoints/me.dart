@@ -54,8 +54,13 @@ class Me extends EndpointPaging {
   }
 
   /// Get the object currently being played on the user’s Spotify account.
-  Future<Player> currentlyPlaying() async {
-    final jsonString = await _api._get('$_path/player/currently-playing');
+  Future<Player> currentlyPlaying(
+      {List<CurrentlyPlayingType> types = CurrentlyPlayingType.all}) async {
+    var type = types.map((type) => type.key).join(',');
+    var queryMap = {'additional_types': type};
+    var query = _buildQuery(queryMap);
+    final jsonString =
+        await _api._get('$_path/player/currently-playing?$query');
 
     if (jsonString.isEmpty) {
       return Player();
@@ -67,16 +72,19 @@ class Me extends EndpointPaging {
 
   /// Get tracks from the current user’s recently played tracks.
   /// Note: Currently doesn’t support podcast episodes.
-  CursorPages<PlayHistory> recentlyPlayed({int? limit, DateTime? after, DateTime? before}) {
+  CursorPages<PlayHistory> recentlyPlayed(
+      {int? limit, DateTime? after, DateTime? before}) {
     assert(after == null || before == null,
-      'Cannot specify both after and before.');
+        'Cannot specify both after and before.');
 
-    return _getCursorPages('$_path/player/recently-played?' +
-        _buildQuery({
-          'limit': limit,
-          'after': after?.millisecondsSinceEpoch,
-          'before': before?.millisecondsSinceEpoch
-        }), (json) => PlayHistory.fromJson(json));
+    return _getCursorPages(
+        '$_path/player/recently-played?' +
+            _buildQuery({
+              'limit': limit,
+              'after': after?.millisecondsSinceEpoch,
+              'before': before?.millisecondsSinceEpoch
+            }),
+        (json) => PlayHistory.fromJson(json));
   }
 
   /// Get the current user's top tracks.
@@ -155,4 +163,18 @@ class FollowingType {
 
   static const artist = FollowingType('artist');
   static const user = FollowingType('user');
+}
+
+class CurrentlyPlayingType {
+  final String _key;
+
+  const CurrentlyPlayingType(this._key);
+  String get key => _key;
+
+  static const track = CurrentlyPlayingType('track');
+  static const episode = CurrentlyPlayingType('episode');
+  static const all = [
+    CurrentlyPlayingType.track,
+    CurrentlyPlayingType.episode,
+  ];
 }
