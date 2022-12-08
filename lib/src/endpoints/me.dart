@@ -110,6 +110,26 @@ class Me extends EndpointPaging {
     return _api._get('$_path/player/devices').then(_parseDeviceJson);
   }
 
+  /// Start a new context or resume current playback on the user's
+  /// active device.
+  ///
+  /// [deviceId] The id of the device this command is targeting.
+  /// [contextUri] Spotify URI of the context to play. Valid contexts are
+  /// albums, artists & playlists.
+  /// [uris] A JSON array of the Spotify track URIs to play.
+  Future<void> play({
+    String? deviceId,
+    String? contextUri,
+    List<String>? uris,
+  }) async {
+    final json = <String, dynamic>{};
+
+    if (contextUri != null) json['context_uri'] = contextUri;
+    if (uris != null) json['uris'] = uris;
+
+    await _api._put('$_path/player/play?device_id$deviceId', jsonEncode(json));
+  }
+
   /// Get a list of shows saved in the current Spotify user’s library.
   Pages<Show> savedShows() {
     return _getPages('$_path/shows', (json) => Show.fromJson(json['show']));
